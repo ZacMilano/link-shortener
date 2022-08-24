@@ -1,0 +1,26 @@
+:root {
+  --font-color-400: #000;
+  --font-color-200: #888;
+}
+
+body {
+  color: var(--font-color-400);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-top: 2em;
+
+  &__title {
+    font-size: 6rem;
+  }
+  
+  &__subtitle {
+    // font-style: italic;
+    color: var(--font-color-200);
+  }
+}
