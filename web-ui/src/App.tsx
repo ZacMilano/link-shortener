@@ -11,20 +11,15 @@ function App() {
     event.preventDefault();
 
     setIsLoading(true);
-    const { shortenedUrl, originalLength, shortenedLength } = {
-      shortenedUrl: longUrl,
-      originalLength: longUrl.length,
-      shortenedLength: longUrl.length,
-    };
-    // const { shortenedUrl, originalLength, shortenedLength } = await (
-    //   await fetch("http://localhost:3001/shorten", {
-    //     method: "PUT",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       longUrl,
-    //     }),
-    //   })
-    // ).json();
+    const { shortenedUrl, originalLength, shortenedLength } = await (
+      await fetch(`http://localhost:3001/shorten`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          longUrl,
+        }),
+      })
+    ).json();
     setIsLoading(false);
 
     setShortUrl(shortenedUrl);
