@@ -3,6 +3,7 @@
   --font-color-300: #BBB;
   --font-color-200: #888;
   --font-color-link: hsl(190, 70%, 45%);
+  --background-color-100: #EEE;
 }
 
 body {
@@ -34,6 +35,9 @@ section {
   padding-inline: 3rem;
 }
 
+.input-section {
+}
+
 @keyframes skeleton-load {
   0% {
     background-color: var(--font-color-200);
@@ -53,6 +57,12 @@ section {
     min-width: 25rem;
     max-width: 100%;
     width: 40rem;
+    
+    padding-block: 1.5em;
+    padding-inline: 3em;
+    background-color: var(--background-color-100);
+    border-radius: 1em;
+    box-shadow: 0.5em 0.5em 1em 0 hsla(0 0 0 / 20%);
   }
 }
 

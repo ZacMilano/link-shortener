@@ -3,7 +3,7 @@ import "./App.scss";
 
 function App() {
   const [longUrl, setLongUrl] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [shortUrl, setShortUrl] = useState<string>();
   const [shortenedPercentage, setShortenedPercentage] = useState<number>();
 
