@@ -1,21 +1,17 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import { createClient as createRedisClient } from "redis";
 import crypto from "crypto";
+import { healthRoute } from "./health";
+import { Route, RedisClient } from "../types";
 
-export function addRoutes(
-  app: express.Express,
-  cache: ReturnType<typeof createRedisClient>
-) {
+export function addRoutes(app: express.Express, cache: RedisClient) {
+  const routes: Route[] = [healthRoute];
+  for (const route of routes) {
+    app[route.method](route.path, route.handler(cache));
+  }
   function isValidShortPath(path: string) {
     return !["health", "shorten"].includes(path);
   }
-
-  function healthHandler(req: Request, res: Response) {
-    res.send({ status: "available" });
-  }
-
-  app.get("/health", healthHandler);
 
   app.post(
     "/shorten",

@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import morganLogger from "morgan";
 import { createClient as createRedisClient } from "redis";
-
 import { addRoutes } from "./routes";
 
 export function main() {
