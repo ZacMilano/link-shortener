@@ -12,8 +12,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-
-  margin-top: 2em;
+  margin-block: 2em;
 
   &__title {
     font-size: 6rem;
@@ -23,4 +22,8 @@ body {
     // font-style: italic;
     color: var(--font-color-200);
   }
+}
+
+section {
+  margin-block: 10rem;
 }
