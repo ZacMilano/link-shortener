@@ -1,16 +1,18 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import morganLogger from "morgan";
 
 const app = express();
-const PORT = 3000;
-const HOST = "localhost";
+export const PORT = 3000;
+export const HOST = "localhost";
 
 app.use(morganLogger("combined"));
 
-app.get("/health", (req, res) => {
+export function healthHandler(req: Request, res: Response) {
   res.send({ status: "available" });
-});
+}
 
-app.listen(PORT, () => {
+app.get("/health", healthHandler);
+
+export const server = app.listen(PORT, () => {
   console.log(`Link Shortening server listening at http://${HOST}:${PORT}`);
 });
