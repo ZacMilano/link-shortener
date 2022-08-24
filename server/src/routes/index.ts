@@ -1,10 +1,11 @@
-import express, { Request, Response } from "express";
-import { healthRoute } from "./health";
+import { Express } from "express";
 import { Route, RedisClient } from "../types";
+import { healthRoute } from "./health";
+import { routeToLongUrlRoute } from "./route-to-long-url";
 import { shortenRoute } from "./shorten";
 
-export function addRoutes(app: express.Express, cache: RedisClient) {
-  const routes: Route[] = [healthRoute, shortenRoute];
+export function addRoutes(app: Express, cache: RedisClient) {
+  const routes: Route[] = [healthRoute, routeToLongUrlRoute, shortenRoute];
 
   for (const route of routes) {
     app[route.method](
@@ -13,18 +14,4 @@ export function addRoutes(app: express.Express, cache: RedisClient) {
       route.handler(cache)
     );
   }
-
-  app.get("/:shortenedPath", async (req: Request, res: Response) => {
-    const longUrl = await cache.get(req.params.shortenedPath);
-    if (longUrl === null) {
-      res.status(404).send();
-      return;
-    }
-
-    res
-      .writeHead(301, {
-        Location: longUrl,
-      })
-      .send();
-  });
 }
