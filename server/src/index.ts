@@ -1,18 +1,24 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import cors from "cors";
 import morganLogger from "morgan";
+import { createClient as createRedisClient } from "redis";
+import { addRoutes } from "./routes";
 
-const app = express();
-export const PORT = 3000;
-export const HOST = "localhost";
+export function main() {
+  const PORT = 3001;
+  const HOST = "localhost";
 
-app.use(morganLogger("combined"));
+  const app = express();
+  const cache = createRedisClient({ url: "redis://localhost:6379" });
 
-export function healthHandler(req: Request, res: Response) {
-  res.send({ status: "available" });
+  app.use(morganLogger("combined"));
+  app.use(cors());
+  addRoutes(app, cache);
+
+  return app.listen(PORT, () => {
+    cache.connect().then(() => console.log("Connected to Redis cache."));
+    console.log(`Link Shortening server listening at http://${HOST}:${PORT}`);
+  });
 }
 
-app.get("/health", healthHandler);
-
-export const server = app.listen(PORT, () => {
-  console.log(`Link Shortening server listening at http://${HOST}:${PORT}`);
-});
+main();
