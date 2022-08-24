@@ -2,7 +2,7 @@
   --font-color-400: #000;
   --font-color-300: #BBB;
   --font-color-200: #888;
-  --font-color-link: hsl(180, 80, 40);
+  --font-color-link: hsl(190, 70%, 45%);
 }
 
 body {
@@ -44,26 +44,34 @@ section {
   }
 }
 
-.output-section--loading {
+.output-section {
   &__container {
-    padding: 2em;
-    min-width: 25rem;
-    max-width: 60%;
-    flex-grow: 1;
-  }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  &__skeleton-loader-line {
-    width: 100%;
-    height: 1em;
-    animation: skeleton-load 1000ms ease infinite alternate;
-    border-radius: 0.5em;
+    min-width: 25rem;
+    max-width: 100%;
+    width: 40rem;
   }
 }
 
+.output-subheader {
+  margin-block: 0.5em;
+}
+
 .short-url-output {
-  display: flex;
-  align-items: center;
-  gap: 1em;
+  &, &--loading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+    margin: 2em;
+  }
+  
+  &--loading {
+    padding-block: 1em;
+  }
   
   &__copy-button {
     background: none;
@@ -79,6 +87,14 @@ section {
 
   &__short-url,
   &__short-url:visited {
+    // color: red;
     color: var(--font-color-link);
+  }
+  
+  &--loading {
+    width: 100%;
+    height: 1em;
+    animation: skeleton-load 1000ms ease infinite alternate;
+    border-radius: 0.5em;
   }
 }
