@@ -25,30 +25,43 @@ export function healthHandler(req: Request, res: Response) {
 app.get("/health", healthHandler);
 
 app.post("/shorten", bodyParser.json(), async (req: Request, res: Response) => {
-  let bytesLength = 8;
+  let bytesLength = 1;
   let shortenedPath = crypto.randomBytes(bytesLength).toString("base64url");
   let cacheCheck = await cache.get(shortenedPath);
 
   while (cacheCheck !== null && isValidShortPath(shortenedPath)) {
+    console.log("Cache hit! Oops!");
     shortenedPath = crypto.randomBytes(++bytesLength).toString("base64url");
     cacheCheck = await cache.get(shortenedPath);
   }
 
-  console.log(req.body);
   let longUrl = req.body.longUrl;
   if (!longUrl.startsWith("http")) {
     longUrl = `http://${longUrl}`;
   }
   await cache.set(shortenedPath, longUrl);
 
-  const shortenedUrl = `http://localhost/${shortenedPath}`;
+  const shortenedUrl = `http://localhost:3001/${shortenedPath}`;
 
-  res.status(201);
-  res.send({
+  res.status(201).send({
     shortenedUrl,
-    originalLength: longUrl.length,
+    originalLength: req.body.longUrl.length,
     shortenedLength: shortenedUrl.length,
   });
+});
+
+app.get("/:shortenedPath", async (req: Request, res: Response) => {
+  const longUrl = await cache.get(req.params.shortenedPath);
+  if (longUrl === null) {
+    res.status(404).send();
+    return;
+  }
+
+  res
+    .writeHead(301, {
+      Location: longUrl,
+    })
+    .send();
 });
 
 export const server = app.listen(PORT, () => {
