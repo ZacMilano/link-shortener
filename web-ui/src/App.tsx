@@ -3,10 +3,35 @@ import "./App.scss";
 
 function App() {
   const [longUrl, setLongUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [shortUrl, setShortUrl] = useState<string>();
+  const [shortenedPercentage, setShortenedPercentage] = useState<number>();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    alert(`Long-ish URL given: ${longUrl}`);
+
+    setIsLoading(true);
+    const { shortenedUrl, originalLength, shortenedLength } = {
+      shortenedUrl: longUrl,
+      originalLength: longUrl.length,
+      shortenedLength: longUrl.length,
+    };
+    // const { shortenedUrl, originalLength, shortenedLength } = await (
+    //   await fetch("http://localhost:3001/shorten", {
+    //     method: "PUT",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({
+    //       longUrl,
+    //     }),
+    //   })
+    // ).json();
+    setIsLoading(false);
+
+    setShortUrl(shortenedUrl);
+
+    setShortenedPercentage(
+      Math.floor(100 * ((originalLength - shortenedLength) / originalLength))
+    );
   };
 
   return (
@@ -38,9 +63,32 @@ function App() {
           </form>
         </section>
 
-        <section className="output-section">
-          <a href="#">Output</a>
-        </section>
+        {isLoading ? (
+          <section className="output-section--loading">
+            <div className="output-section--loading__container">
+              <div className="output-section--loading__skeleton-loader-line"></div>
+            </div>
+          </section>
+        ) : (
+          shortUrl && (
+            <section className="output-section">
+              <div className="short-url-output">
+                <a className="short-url-output__short-url" href={shortUrl}>
+                  {shortUrl}
+                </a>
+                <button
+                  className="short-url-output__copy-button"
+                  onClick={() => alert("ayo")}
+                >
+                  <img
+                    src={require("./images/copy-icon.png")}
+                    alt="Copy Shortened URL"
+                  />
+                </button>
+              </div>
+            </section>
+          )
+        )}
       </main>
     </>
   );
