@@ -1,12 +1,12 @@
-import express from "express";
+import { RequestHandler } from "express";
 import { createClient as createRedisClient } from "redis";
 
 export interface Route {
   path: string;
-  handler: (
-    cache: ReturnType<typeof createRedisClient>
-  ) => express.RequestHandler;
   method: "post" | "get";
+  middlewares?: RequestHandler[];
+  // Curried closure to give app/cache context
+  handler: (cache: RedisClient) => RequestHandler;
 }
 
 export type RedisClient = ReturnType<typeof createRedisClient>;
