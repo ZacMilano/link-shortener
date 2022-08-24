@@ -1,0 +1,143 @@
+:root {
+  --font-color-400: #000;
+  --font-color-300: #888;
+  --font-color-200: #BBB;
+  --font-color-100: #FFF;
+  --link-color-400: hsl(190, 70%, 40%);
+  --link-color-200: hsl(190, 70%, 60%);
+  --background-color-100: #EEE;
+}
+
+body {
+  color: var(--font-color-400);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 2em;
+
+  &__title {
+    font-size: 6rem;
+  }
+  
+  &__subtitle {
+    color: var(--font-color-200);
+  }
+}
+
+section {
+  margin-block: 10rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: 3rem;
+}
+
+.input-section {
+  gap: 2em;
+}
+
+.url-input-form {
+  display: flex;
+  flex-direction: row;
+  min-width: 25rem;
+  max-width: 100%;
+  width: 40rem;
+  background: var(--link-color-200);
+  border-radius: 1em;
+  
+  &__url-input {
+    flex-grow: 1;
+    border: none;
+    border-radius: 1em;
+    height: 2em;
+    padding: 1em;
+    font-size: 1rem;
+    box-shadow: inset 0 0 0.5em 0 hsla(0 0 0 / 20%);
+  }
+  
+  &__submit {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--font-color-100);
+    padding-inline: 1em;
+  }
+}
+
+@keyframes skeleton-load {
+  0% {
+    background-color: var(--font-color-200);
+  }
+  
+  100% {
+    background-color: var(--font-color-300);
+  }
+}
+
+.output-section {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    min-width: 25rem;
+    max-width: 100%;
+    width: 40rem;
+    
+    padding-block: 1.5em;
+    padding-inline: 3em;
+    background-color: var(--background-color-100);
+    border-radius: 1em;
+    box-shadow: 0.5em 0.5em 1em 0 hsla(0 0 0 / 20%);
+  }
+}
+
+.output-subheader {
+  margin-block: 0.5em;
+}
+
+.short-url-output {
+  &, &--loading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+    margin: 2em;
+  }
+  
+  &--loading {
+    padding-block: 1em;
+  }
+  
+  &__copy-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    width: 2rem;
+    height: 2rem;
+    
+    & img {
+      max-width: 100%;
+    }
+  }
+
+  &__short-url,
+  &__short-url:visited {
+    // color: red;
+    color: var(--link-color-400);
+  }
+  
+  &--loading {
+    width: 100%;
+    height: 1em;
+    animation: skeleton-load 1000ms ease infinite alternate;
+    border-radius: 0.5em;
+  }
+}
