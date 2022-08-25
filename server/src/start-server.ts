@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morganLogger from "morgan";
-import { createClient as createRedisClient } from "redis";
+import redis from "redis";
 import { addRoutes } from "./routes/add-routes";
 
 export function startServer(onPort?: number) {
@@ -9,7 +9,7 @@ export function startServer(onPort?: number) {
   const HOST = "localhost";
 
   const app = express();
-  const cache = createRedisClient({ url: "redis://localhost:6379" });
+  const cache = redis.createClient({ url: "redis://localhost:6379" });
 
   app.use(morganLogger("combined"));
   app.use(cors());

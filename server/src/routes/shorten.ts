@@ -43,7 +43,8 @@ export function shortenHandler(cache: RedisClient) {
 
     const shortenedUrl = `http://localhost:3001/${shortenedPath}`;
 
-    res.status(201).send({
+    res.status(201);
+    res.send({
       shortenedUrl,
       originalLength: req.body.longUrl.length,
       shortenedLength: shortenedUrl.length,

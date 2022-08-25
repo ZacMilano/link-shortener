@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { RedisClient } from "../../types";
-import { createClient as createRedisClient } from "redis-mock";
+import redis from "redis-mock";
 import { routeToLongUrlHandler } from "../route-to-long-url";
 
 describe("/shorten route", () => {
@@ -8,7 +8,7 @@ describe("/shorten route", () => {
   let handler: ReturnType<typeof routeToLongUrlHandler>;
 
   beforeEach(() => {
-    cache = createRedisClient();
+    cache = redis.createClient();
     handler = routeToLongUrlHandler(cache);
   });
 
