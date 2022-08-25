@@ -3,6 +3,7 @@ import cors from "cors";
 import morganLogger from "morgan";
 import redis from "redis";
 import { addRoutes } from "./routes/add-routes";
+import { routes } from "./routes";
 
 export function startServer(onPort?: number) {
   const PORT = onPort ?? 3001;
@@ -13,7 +14,7 @@ export function startServer(onPort?: number) {
 
   app.use(morganLogger("combined"));
   app.use(cors());
-  addRoutes(app, cache);
+  addRoutes(app, cache, routes);
 
   return app.listen(PORT, () => {
     cache.connect().then(() => console.log("Connected to Redis cache."));
