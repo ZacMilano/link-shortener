@@ -2,9 +2,9 @@
 
 <img src="https://thecozycook.com/wp-content/uploads/2021/06/Salsa-Recipe-f-500x375.jpg" width="100px" alt="Salsa (not ZALSA, but close!)" />
 
-<br />
-
 ## To install <abbr title="Zac's Amazing Link Shortener App">ZALSA</abbr>:
+
+1. Run the following command:
 
 ```
 yarn

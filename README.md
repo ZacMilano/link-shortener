@@ -2,9 +2,11 @@
 
 <img src="https://thecozycook.com/wp-content/uploads/2021/06/Salsa-Recipe-f-500x375.jpg" width="100px" alt="Salsa (not ZALSA, but close!)" />
 
-<br />
-
 ## To install <abbr title="Zac's Amazing Link Shortener App">ZALSA</abbr>:
+
+1. Clone the repo.
+2. Navigate to the repo's root directory.
+3. Run the following command:
 
 ```
 cd server && yarn && cd ../web-ui && yarn && cd ..
@@ -28,7 +30,7 @@ cd server && yarn serve
 cd web-ui && yarn start
 ```
 
-Then, go to your favorite web browser, or Google Chrome if it's not your favorite web browser, and go to [http://localhost:3000](http://localhost:3000). This should happen automatically with the second command, but if not, go ahead and do it now.
+Then, go to your favorite web browser, or Google Chrome if it's not your favorite web browser, and go to [http://localhost:3000](http://localhost:3000).
 
 <br />
 

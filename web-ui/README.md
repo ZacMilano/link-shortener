@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# <strong>This is <abbr title="Zac's Amazing Link Shortener App">ZALSA</abbr>'s back-end server.</strong>
+
+<img src="https://thecozycook.com/wp-content/uploads/2021/06/Salsa-Recipe-f-500x375.jpg" width="100px" alt="Salsa (not ZALSA, but close!)" />
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
