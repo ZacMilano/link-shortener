@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import morganLogger from "morgan";
 import { createClient as createRedisClient } from "redis";
-import { addRoutes } from "./routes";
+import { addRoutes } from "./routes/add-routes";
 
 export function startServer(onPort?: number) {
   const PORT = onPort ?? 3001;
