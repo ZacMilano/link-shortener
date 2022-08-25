@@ -4,6 +4,6 @@ import HomePage from "./home";
 
 test("renders learn react link", () => {
   render(<HomePage />);
-  const linkElement = screen.getByText(/ZALS/i);
-  expect(linkElement).toBeInTheDocument();
+  const titleElement = screen.getByText(/ZALSA/i);
+  expect(titleElement).toBeInTheDocument();
 });

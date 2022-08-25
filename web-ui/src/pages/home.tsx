@@ -47,8 +47,8 @@ function HomePage() {
   return (
     <>
       <header className="header">
-        <h1 className="header__title">ZALS</h1>
-        <p className="header__subtitle">Zac's Amazing Link Shortener</p>
+        <h1 className="header__title">ZALSA</h1>
+        <p className="header__subtitle">Zac's Amazing Link Shortener App</p>
       </header>
 
       <main>
