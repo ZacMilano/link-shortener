@@ -11,10 +11,12 @@ describe("/shorten route", () => {
   let cacheDb: Record<string, string>;
   let handler: ReturnType<typeof shortenHandler>;
   let cryptoSpy: jest.SpyInstance;
+  let cacheGetSpy: jest.SpyInstance;
+  let cacheSetSpy: jest.SpyInstance;
 
   const mockReq = {
     body: {
-      longUrl: "example.com",
+      longUrl: "http://example.com",
     },
   } as any as Request;
 
@@ -29,9 +31,12 @@ describe("/shorten route", () => {
         return cacheDb[key] ?? null;
       },
       set: (key: string, value: string) => {
+        console.log("calling set");
         cacheDb[key] = value;
       },
     } as any as RedisClient;
+    cacheGetSpy = jest.spyOn(cache, "get");
+    cacheSetSpy = jest.spyOn(cache, "set");
     cacheDb = {};
     handler = shortenHandler(cache);
     cryptoSpy = jest.spyOn(Crypto, "randomBytes");
@@ -42,19 +47,33 @@ describe("/shorten route", () => {
       describe("the first-generated path has not been seen yet", () => {
         it("only `get`s from the cache once", async () => {
           // Arrange
-          cache.get = jest.fn().mockImplementation(cache.get);
           const bytes = Buffer.from([0x12]);
           cryptoSpy.mockReturnValue(bytes);
 
           // Act
-          handler(mockReq, mockRes);
+          await handler(mockReq, mockRes);
 
           // Assert
-          expect(cache.get).toHaveBeenCalledWith(bytes.toString("base64url"));
-          expect(cache.get).toHaveBeenCalledTimes(1);
+          expect(cacheGetSpy).toHaveBeenCalledWith(bytes.toString("base64url"));
+          expect(cacheGetSpy).toHaveBeenCalledTimes(1);
+          expect(cacheGetSpy).toHaveReturnedWith(null);
         });
 
-        it("only `set`s in the cache once", () => {});
+        it("only `set`s in the cache once", async () => {
+          // Arrange
+          const bytes = Buffer.from([0x12]);
+          cryptoSpy.mockReturnValue(bytes);
+
+          // Act
+          await handler(mockReq, mockRes);
+
+          // Assert
+          expect(cacheSetSpy).toHaveBeenCalledWith(
+            bytes.toString("base64url"),
+            mockReq.body.longUrl
+          );
+          expect(cacheSetSpy).toHaveBeenCalledTimes(1);
+        });
       });
       describe("the first-generated path has been seen before", () => {
         it("`get`s from the cache until a novel string is generated", () => {});
