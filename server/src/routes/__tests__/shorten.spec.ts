@@ -235,31 +235,13 @@ describe("/shorten route", () => {
           });
         });
 
-        it("`shortenedUrl` links to this server properly", () => {
+        it("the body params are accurate", () => {
           // Assert
           expect(mockRes.send).toHaveBeenCalledWith({
             shortenedUrl: expect.stringMatching(
               /^http:\/\/localhost:3001\/[a-zA-z\d_-]+/
             ),
-            originalLength: expect.any(Number),
-            shortenedLength: expect.any(Number),
-          });
-        });
-
-        it("`originalLength` is the length of the given long-form link", () => {
-          // Assert
-          expect(mockRes.send).toHaveBeenCalledWith({
-            shortenedUrl: expect.any(String),
             originalLength: "http://example.com".length,
-            shortenedLength: expect.any(Number),
-          });
-        });
-
-        it("`shortenedLength` is the length of the short-form link", () => {
-          // Assert
-          expect(mockRes.send).toHaveBeenCalledWith({
-            shortenedUrl: expect.any(String),
-            originalLength: expect.any(Number),
             shortenedLength: `http://localhost:3001/${bytes.toString(
               "base64url"
             )}`.length,
