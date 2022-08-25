@@ -28,6 +28,8 @@ export function shortenHandler(cache: RedisClient) {
 
     if (!cache.isOpen) {
       res.status(500);
+      res.send();
+      return;
     }
 
     let bytesLength = 1;
