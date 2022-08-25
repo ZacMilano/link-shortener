@@ -116,21 +116,25 @@ section {
   }
   
   &__copy-button {
-    background: none;
+    background-color: transparent;
     border: none;
     cursor: pointer;
 
     width: 2rem;
     height: 2rem;
+    border-radius: 0.5rem;
     
-    & img {
+    & .copy-icon,
+    & .check-icon {
       max-width: 100%;
+      fill: var(--link-color-400);
+      stroke: var(--link-color-400);
     }
+
   }
 
   &__short-url,
   &__short-url:visited {
-    // color: red;
     color: var(--link-color-400);
   }
   

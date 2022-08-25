@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import "./App.scss";
+import { ReactComponent as CopyIcon } from "./images/copy-icon.svg";
+import { ReactComponent as CheckIcon } from "./images/check-icon.svg";
 
 function App() {
   const [longUrl, setLongUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shortUrl, setShortUrl] = useState<string>();
   const [shortenedPercentage, setShortenedPercentage] = useState<number>();
+  const [showCopiedCheck, setShowCopiedCheck] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,9 +36,9 @@ function App() {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     if (shortUrl) {
-      navigator.clipboard.writeText(shortUrl).then(() => {
-        alert("Copied shortened link to clipboard. Go wild!");
-      });
+      await navigator.clipboard.writeText(shortUrl);
+      setShowCopiedCheck(true);
+      setTimeout(() => setShowCopiedCheck(false), 5000);
     }
   };
 
@@ -91,10 +94,11 @@ function App() {
                     className="short-url-output__copy-button"
                     onClick={copyShortLinkToClipboard}
                   >
-                    <img
-                      src={require("./images/copy-icon.png")}
-                      alt="Copy Shortened URL"
-                    />
+                    {showCopiedCheck ? (
+                      <CheckIcon className="check-icon" />
+                    ) : (
+                      <CopyIcon className="copy-icon" />
+                    )}
                   </button>
                 </div>
               )}
