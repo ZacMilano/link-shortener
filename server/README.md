@@ -10,6 +10,9 @@
 yarn
 ```
 
+4. Install [Redis](https://redis.io/docs/getting-started/).
+5. Ensure that Redis is running on your local machine, on port `6379`.
+
 <br />
 
 ## To run <abbr title="Zac's Amazing Link Shortener App">ZALSA</abbr>:
