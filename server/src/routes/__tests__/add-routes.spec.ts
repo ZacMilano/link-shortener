@@ -1,14 +1,15 @@
 import { Express } from "express";
 import { Route, RedisClient } from "../../types";
+import { addRoutes } from "../add-routes";
 
 describe("addRoutes function", () => {
+  const app = { get: jest.fn(), post: jest.fn() } as any as Express;
   const cache = { mock: "cache value" } as any as RedisClient;
-  const app = { get: jest.fn(), set: jest.fn() } as any as Express;
 
-  const rootHandler = jest.fn();
-  const healthHandler = jest.fn();
-  const otherRouteHandler = jest.fn();
-  const withParamsHandler = jest.fn();
+  const rootHandler = jest.fn().mockReturnValue("rootHandler");
+  const healthHandler = jest.fn().mockReturnValue("healthHandler");
+  const otherRouteHandler = jest.fn().mockReturnValue("otherRouteHandler");
+  const withParamsHandler = jest.fn().mockReturnValue("withParamsHandler");
 
   const middlewareOne = jest.fn();
   const middlewareTwo = jest.fn();
@@ -31,16 +32,47 @@ describe("addRoutes function", () => {
       handler: otherRouteHandler,
     },
     {
-      path: "/with/routeParams/:one/and/:two",
+      path: "/with/route-params/:one/and/:two",
       method: "post",
       middlewares: [middlewareOne, middlewareTwo],
       handler: withParamsHandler,
     },
   ];
 
-  it("adds the appropriate endpoint onto `app`", () => {});
+  beforeAll(() => {
+    // Arrange & Act
+    addRoutes(app, cache, routes);
+  });
 
-  it("adds middlewares when applicable", () => {});
+  it("uses the routes' methods and endpoints, and middlewares when applicable", () => {
+    // Assert
+    expect(app.get).toHaveBeenCalledWith("/", "rootHandler");
+    expect(app.get).toHaveBeenCalledWith("/health", "healthHandler");
+    expect(app.post).toHaveBeenCalledWith(
+      "/other/route",
+      middlewareOne,
+      "otherRouteHandler"
+    );
+    expect(app.post).toHaveBeenCalledWith(
+      "/with/route-params/:one/and/:two",
+      middlewareOne,
+      middlewareTwo,
+      "withParamsHandler"
+    );
+  });
 
-  it("calls routes' handlers", () => {});
+  it("calls routes' handlers", () => {
+    // Arrange
+    const handlers = [
+      rootHandler,
+      healthHandler,
+      otherRouteHandler,
+      withParamsHandler,
+    ];
+
+    for (const handler of handlers) {
+      expect(handler).toHaveBeenCalledTimes(1);
+      expect(handler).toHaveBeenCalledWith(cache);
+    }
+  });
 });
