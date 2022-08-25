@@ -21,8 +21,13 @@ export function shortenHandler(cache: RedisClient) {
       !req.body.longUrl ||
       typeof req.body.longUrl !== "string"
     ) {
-      res.status(400).send("Bad Request bodyNo body");
+      res.status(400);
+      res.send("Bad request body");
       return;
+    }
+
+    if (!cache.isOpen) {
+      res.status(500);
     }
 
     let bytesLength = 1;

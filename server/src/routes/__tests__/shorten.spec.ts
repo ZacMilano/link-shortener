@@ -18,11 +18,13 @@ describe("/shorten route", () => {
 
   beforeEach(async () => {
     cache = {
+      get isOpen() {
+        return true;
+      },
       get: (key: string) => {
         return cacheDb[key] ?? null;
       },
       set: (key: string, value: string) => {
-        console.log("calling set");
         cacheDb[key] = value;
       },
     } as any as RedisClient;
@@ -149,22 +151,120 @@ describe("/shorten route", () => {
     });
 
     describe("response", () => {
-      it("sends 500 if there's no cache connection", () => {});
+      it("sends 500 if there's no cache connection", async () => {
+        // Arrange
+        jest.spyOn(cache, "isOpen", "get").mockReturnValueOnce(false);
 
-      it("sends 400 if `longUrl` is not present in request body", () => {});
+        // Act
+        await handler(mockReq, mockRes);
 
-      it("sends 400 if `longUrl` is not a string", () => {});
+        // Assert
+        expect(mockRes.status).toHaveBeenCalledWith(500);
+        expect(mockRes.send).toHaveBeenCalled();
+      });
 
-      it("sends 201 if successful", () => {});
+      it("sends 400 if there is no request boyd", async () => {
+        // Arrange
+        delete mockReq.body;
+
+        // Act
+        await handler(mockReq, mockRes);
+
+        // Assert
+        expect(mockRes.status).toHaveBeenCalledWith(400);
+        expect(mockRes.send).toHaveBeenCalledWith("Bad request body");
+      });
+
+      it("sends 400 if `longUrl` is not present in request body", async () => {
+        // Arrange
+        mockReq.body = { longaniza: "a type of sausage" };
+
+        // Act
+        await handler(mockReq, mockRes);
+
+        // Assert
+        expect(mockRes.status).toHaveBeenCalledWith(400);
+        expect(mockRes.send).toHaveBeenCalledWith("Bad request body");
+      });
+
+      it("sends 400 if `longUrl` is not a string", async () => {
+        // Arrange
+        mockReq.body = {
+          longUrl: {
+            protocol: "https",
+            domain: "example.com",
+            path: "/test-path",
+            search: "?search=type&query=params",
+          },
+        };
+
+        // Act
+        await handler(mockReq, mockRes);
+
+        // Assert
+        expect(mockRes.status).toHaveBeenCalledWith(400);
+        expect(mockRes.send).toHaveBeenCalledWith("Bad request body");
+      });
+
+      it("sends 201 if successful", async () => {
+        // Arrange & Act
+        await handler(mockReq, mockRes);
+
+        // Assert
+        expect(mockRes.status).toHaveBeenCalledWith(201);
+        expect(mockRes.send).toHaveBeenCalled();
+      });
 
       describe("body", () => {
-        it("contains `shortenedUrl`, `originalLength`, and `shortenedLength`", () => {});
+        const bytes = Buffer.from([0x12]);
 
-        it("`shortenedUrl` links to this server properly", () => {});
+        beforeEach(async () => {
+          // Arrange
+          cryptoSpy.mockReturnValue(bytes);
 
-        it("`originalLength` is the length of the given long-form link", () => {});
+          // Act
+          await handler(mockReq, mockRes);
+        });
 
-        it("`shortenedLength` is the length of the short-form link", () => {});
+        it("contains `shortenedUrl`, `originalLength`, and `shortenedLength`", () => {
+          // Assert
+          expect(mockRes.send).toHaveBeenCalledWith({
+            shortenedUrl: expect.any(String),
+            originalLength: expect.any(Number),
+            shortenedLength: expect.any(Number),
+          });
+        });
+
+        it("`shortenedUrl` links to this server properly", () => {
+          // Assert
+          expect(mockRes.send).toHaveBeenCalledWith({
+            shortenedUrl: expect.stringMatching(
+              /^http:\/\/localhost:3001\/[a-zA-z\d_-]+/
+            ),
+            originalLength: expect.any(Number),
+            shortenedLength: expect.any(Number),
+          });
+        });
+
+        it("`originalLength` is the length of the given long-form link", () => {
+          // Assert
+          expect(mockRes.send).toHaveBeenCalledWith({
+            shortenedUrl: expect.any(String),
+            originalLength: "http://example.com".length,
+            shortenedLength: expect.any(Number),
+          });
+        });
+
+        it("`shortenedLength` is the length of the short-form link", () => {
+          // Assert
+          expect(mockRes.send).toHaveBeenCalledWith({
+            shortenedUrl: expect.any(String),
+            originalLength: expect.any(Number),
+            shortenedLength: `http://localhost:3001/${bytes.toString(
+              "base64url"
+            )}`.length,
+          });
+        });
       });
     });
   });
