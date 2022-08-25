@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./App.scss";
-import { ReactComponent as CopyIcon } from "./images/copy-icon.svg";
-import { ReactComponent as CheckIcon } from "./images/check-icon.svg";
+import "./home.scss";
+import { ReactComponent as CopyIcon } from "../images/copy-icon.svg";
+import { ReactComponent as CheckIcon } from "../images/check-icon.svg";
 
-function App() {
+function HomePage() {
   const [longUrl, setLongUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shortUrl, setShortUrl] = useState<string>();
@@ -36,7 +36,9 @@ function App() {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     if (shortUrl) {
+      // Copy to clipboard
       await navigator.clipboard.writeText(shortUrl);
+      // Show checkmark instead of copy icon for 5 seconds
       setShowCopiedCheck(true);
       setTimeout(() => setShowCopiedCheck(false), 5000);
     }
@@ -110,4 +112,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;
