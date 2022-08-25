@@ -7,7 +7,7 @@ export const routeToLongUrlRoute: Route = {
   handler: routeToLongUrlHandler,
 };
 
-function routeToLongUrlHandler(cache: RedisClient) {
+export function routeToLongUrlHandler(cache: RedisClient) {
   return async function (req: Request, res: Response) {
     const longUrl = await cache.get(req.params.shortenedPath);
 

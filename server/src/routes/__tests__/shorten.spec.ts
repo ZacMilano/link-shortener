@@ -32,6 +32,8 @@ describe("/shorten route", () => {
     it("adds 'http://' to the longUrl if not already present", () => {});
 
     describe("response", () => {
+      it("sends 500 if there's no cache connection", () => {});
+
       it("sends 400 if `longUrl` is not present in request body", () => {});
 
       it("sends 400 if `longUrl` is not a string", () => {});
