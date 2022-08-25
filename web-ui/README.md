@@ -1,4 +1,4 @@
-# <strong>This is <abbr title="Zac's Amazing Link Shortener App">ZALSA</abbr>'s back-end server.</strong>
+# <strong>This is <abbr title="Zac's Amazing Link Shortener App">ZALSA</abbr>'s UI.</strong>
 
 <img src="https://thecozycook.com/wp-content/uploads/2021/06/Salsa-Recipe-f-500x375.jpg" width="100px" alt="Salsa (not ZALSA, but close!)" />
 
