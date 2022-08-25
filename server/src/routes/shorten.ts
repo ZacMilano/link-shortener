@@ -10,12 +10,28 @@ export const shortenRoute: Route = {
   handler: shortenHandler,
 };
 
-function isValidShortPath(path: string) {
+export function isValidShortPath(path: string) {
   return !["health", "shorten"].includes(path);
 }
 
-function shortenHandler(cache: RedisClient) {
+export function shortenHandler(cache: RedisClient) {
   return async function (req: Request, res: Response) {
+    if (
+      !req.body ||
+      !req.body.longUrl ||
+      typeof req.body.longUrl !== "string"
+    ) {
+      res.status(400);
+      res.send("Bad request body");
+      return;
+    }
+
+    if (!cache.isOpen) {
+      res.status(500);
+      res.send();
+      return;
+    }
+
     let bytesLength = 1;
     let shortenedPath = crypto.randomBytes(bytesLength).toString("base64url");
     let cacheCheck = await cache.get(shortenedPath);
@@ -34,7 +50,8 @@ function shortenHandler(cache: RedisClient) {
 
     const shortenedUrl = `http://localhost:3001/${shortenedPath}`;
 
-    res.status(201).send({
+    res.status(201);
+    res.send({
       shortenedUrl,
       originalLength: req.body.longUrl.length,
       shortenedLength: shortenedUrl.length,

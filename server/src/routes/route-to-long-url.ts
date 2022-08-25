@@ -7,19 +7,25 @@ export const routeToLongUrlRoute: Route = {
   handler: routeToLongUrlHandler,
 };
 
-function routeToLongUrlHandler(cache: RedisClient) {
+export function routeToLongUrlHandler(cache: RedisClient) {
   return async function (req: Request, res: Response) {
-    const longUrl = await cache.get(req.params.shortenedPath);
-
-    if (longUrl === null) {
-      res.status(404).send();
+    if (!cache.isOpen) {
+      res.status(500);
+      res.send();
       return;
     }
 
-    res
-      .writeHead(301, {
-        Location: longUrl,
-      })
-      .send();
+    const longUrl = await cache.get(req.params.shortenedPath);
+
+    if (longUrl === null) {
+      res.status(404);
+      res.send();
+      return;
+    }
+
+    res.writeHead(301, {
+      Location: longUrl,
+    });
+    res.send();
   };
 }

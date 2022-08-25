@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { createClient as createRedisClient } from "redis";
+import redis from "redis";
 
 export interface Route {
   path: string;
@@ -9,4 +9,4 @@ export interface Route {
   handler: (cache: RedisClient) => RequestHandler;
 }
 
-export type RedisClient = ReturnType<typeof createRedisClient>;
+export type RedisClient = ReturnType<typeof redis.createClient>;
