@@ -53,9 +53,7 @@ function HomePage() {
 
       <main>
         <section className="input-section">
-          <h2 className="instructions">
-            Simply submit your URL below and we'll take care of the rest.
-          </h2>
+          <h2>Simply submit your URL below and we'll take care of the rest.</h2>
 
           <form className="url-input-form" onSubmit={handleSubmit}>
             <input
@@ -74,12 +72,11 @@ function HomePage() {
         </section>
 
         {(shortUrl || isLoading) && (
-          <section className="output-section">
-            <div className="output-section__container">
-              <h2 className="output-header">
-                {isLoading ? "Loading..." : "Here you go!"}
-              </h2>
-              <p className="output-subheader">
+          <section>
+            <div className="output-card">
+              <h2>{isLoading ? "Loading..." : "Here you go!"}</h2>
+
+              <p className="output-card__subheader">
                 {isLoading
                   ? "Waiting for your URL to be shortened..."
                   : `Shortened your URL by ${shortenedPercentage}%!`}
@@ -89,7 +86,7 @@ function HomePage() {
                 <div className="short-url-output--loading"></div>
               ) : (
                 <div className="short-url-output">
-                  <a className="short-url-output__short-url" href={shortUrl}>
+                  <a className="short-url-output__link" href={shortUrl}>
                     {shortUrl}
                   </a>
                   <button
