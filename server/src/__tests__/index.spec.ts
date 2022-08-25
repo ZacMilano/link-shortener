@@ -1,7 +1,17 @@
 import request from "supertest";
-import { server } from "../index";
+import { startServer } from "../start-server";
 
 describe("Link Shortening App", () => {
+  let server: ReturnType<typeof startServer>;
+
+  beforeEach(() => {
+    server = startServer(0);
+  });
+
+  afterEach(() => {
+    server.close();
+  });
+
   describe("/health", () => {
     it("responds with status: available", async () => {
       // Arrange & Act
@@ -14,10 +24,5 @@ describe("Link Shortening App", () => {
         "application/json; charset=utf-8"
       );
     });
-  });
-
-  afterAll(() => {
-    // Un-Arrange
-    server.close();
   });
 });

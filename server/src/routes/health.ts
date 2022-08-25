@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { RedisClient, Route } from "../types";
+import { Route } from "../types";
 
 export const healthRoute: Route = {
   path: "/health",
@@ -7,7 +7,7 @@ export const healthRoute: Route = {
   handler: healthHandler,
 };
 
-function healthHandler(cache: RedisClient) {
+export function healthHandler() {
   return function (req: Request, res: Response) {
     res.send({ status: "available" });
   };

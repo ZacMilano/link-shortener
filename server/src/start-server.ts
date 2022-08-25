@@ -4,8 +4,8 @@ import morganLogger from "morgan";
 import { createClient as createRedisClient } from "redis";
 import { addRoutes } from "./routes";
 
-export function main() {
-  const PORT = 3001;
+export function startServer(onPort?: number) {
+  const PORT = onPort ?? 3001;
   const HOST = "localhost";
 
   const app = express();
@@ -20,5 +20,3 @@ export function main() {
     console.log(`Link Shortening server listening at http://${HOST}:${PORT}`);
   });
 }
-
-main();
