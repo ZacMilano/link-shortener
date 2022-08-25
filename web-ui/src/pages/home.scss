@@ -29,10 +29,10 @@ body {
 }
 
 section {
-  margin-block: 10rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-block: 10rem;
   padding-inline: 3rem;
 }
 
@@ -56,7 +56,7 @@ section {
     height: 2em;
     padding: 1em;
     font-size: 1rem;
-    box-shadow: inset 0 0 0.5em 0 hsla(0 0 0 / 20%);
+    box-shadow: inset 0 0 0.5em 0 hsla(0 0% 0% / 20%);
   }
   
   &__submit {
@@ -80,26 +80,24 @@ section {
   }
 }
 
-.output-section {
-  &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.output-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    min-width: 25rem;
-    max-width: 100%;
-    width: 40rem;
-    
-    padding-block: 1.5em;
-    padding-inline: 3em;
-    background-color: var(--background-color-100);
-    border-radius: 1em;
-    box-shadow: 0.5em 0.5em 1em 0 hsla(0 0 0 / 20%);
+  min-width: 25rem;
+  max-width: 100%;
+  width: 40rem;
+  
+  padding-block: 1.5em;
+  padding-inline: 3em;
+  background-color: var(--background-color-100);
+  border-radius: 1em;
+  box-shadow: 0 0.5em 1em 0.5em hsla(0 0% 0% / 10%);
+
+  &__subheader {
+    margin-block: 0.5em;
   }
-}
-
-.output-subheader {
-  margin-block: 0.5em;
 }
 
 .short-url-output {
@@ -115,25 +113,28 @@ section {
     padding-block: 1em;
   }
   
+  &__link,
+  &__link:visited {
+    color: var(--link-color-400);
+  }
+  
   &__copy-button {
-    background: none;
+    background-color: transparent;
     border: none;
     cursor: pointer;
 
     width: 2rem;
     height: 2rem;
+    border-radius: 0.5rem;
     
-    & img {
+    & .copy-icon,
+    & .check-icon {
       max-width: 100%;
+      fill: var(--link-color-400);
+      stroke: var(--link-color-400);
     }
   }
 
-  &__short-url,
-  &__short-url:visited {
-    // color: red;
-    color: var(--link-color-400);
-  }
-  
   &--loading {
     width: 100%;
     height: 1em;
